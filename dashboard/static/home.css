@@ -4,21 +4,31 @@
     padding: 0;
 }
 
+*::before,
+after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding-top: 3rem;
+    font-family: 'Roboto' 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     margin: 0;
+    background-color: steelblue;
 }
 
 .nav {
+    z-index: 1;
     position: fixed;
     background-color: #222;
     top: 0;
     left: 0;
     right: 0;
     transition: all 0.3s ease-in;
+    margin-bottom: 1rem;
 }
 
 nav ul {
@@ -31,7 +41,7 @@ nav ul {
 nav a {
     color: white;
     text-decoration: none;
-    padding: 10px;
+    padding: 1rem;
 }
 
 .nav .container {
@@ -51,5 +61,95 @@ nav a {
 
 .container {
     margin: 0 auto;
-    padding: 10px;
+    padding: 1rem;
+}
+
+section {
+    margin-top: 5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.questions {
+    max-width: 100%;
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.home-item {
+    background-color: #283042;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    box-shadow: .5rem 2px .5rem rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease;
+}
+
+.home-link {
+    transition: width 2s, height 4s;
+    text-decoration: none;
+    color: white;
+    background-color: #283042;
+    min-width: 10rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    font-size: 1.2rem;
+    transition: 0.3s ease;
+}
+
+.active #add {
+    display: none;
+}
+
+#remove {
+    display: none;
+}
+
+.active #remove {
+    display: block;
+}
+
+.answer {
+    transition: width 2s, height 4s;
+    transition: width 2s;
+    display: none;
+    color: rgb(230, 230, 230);
+    overflow: hidden;
+    position: relative;
+    background-color: #212838;
+    border-radius: 0.4rem;
+    padding-left: 0.5rem;
+    transition: display 650ms;
+}
+
+.active .answer {
+    display: block;
+    transition: 0.3s ease;
+}
+
+.active .answer::before {
+    content: "";
+    position: absolute;
+    width: .3rem;
+    border-radius: 0.2rem;
+    background-color: #8fc460;
+    height: 90%;
+    margin-left: 0.1rem;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.answer p {
+    padding: 0.3rem;
+}
+
+.home-link:target .answer {
+    max-height: 20rem;
 }
