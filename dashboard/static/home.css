@@ -21,13 +21,13 @@ body {
 }
 
 .nav {
+    max-height: 4rem;
     z-index: 1;
     position: fixed;
     background-color: #222;
     top: 0;
     left: 0;
     right: 0;
-    transition: all 0.3s ease-in;
     margin-bottom: 1rem;
 }
 
@@ -65,7 +65,7 @@ nav a {
 }
 
 section {
-    margin-top: 5rem;
+    margin-top: 2rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -85,11 +85,9 @@ section {
     margin-bottom: 1rem;
     padding: 0.8rem;
     box-shadow: .5rem 2px .5rem rgba(0, 0, 0, 0.1);
-    transition: 0.3s ease;
 }
 
 .home-link {
-    transition: width 2s, height 4s;
     text-decoration: none;
     color: white;
     background-color: #283042;
@@ -100,7 +98,6 @@ section {
     justify-content: space-between;
     padding: 0.5rem 0;
     font-size: 1.2rem;
-    transition: 0.3s ease;
 }
 
 .active #add {
@@ -116,8 +113,6 @@ section {
 }
 
 .answer {
-    transition: width 2s, height 4s;
-    transition: width 2s;
     display: none;
     color: rgb(230, 230, 230);
     overflow: hidden;
@@ -125,12 +120,10 @@ section {
     background-color: #212838;
     border-radius: 0.4rem;
     padding-left: 0.5rem;
-    transition: display 650ms;
 }
 
 .active .answer {
     display: block;
-    transition: 0.3s ease;
 }
 
 .active .answer::before {
