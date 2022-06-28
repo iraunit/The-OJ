@@ -53,7 +53,7 @@ a {
 .form-control input {
     background-color: transparent;
     border: 0;
-    position: relative;
+    position: absolute;
     display: block;
     border-bottom: 2px white solid;
     width: 100%;

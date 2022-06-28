@@ -38,6 +38,9 @@ def register(request):
 
 def logoutUser(request):
     logout(request)
+    storage = messages.get_messages(request)
+    storage.used = True
+    messages.success(request,'Successfully Signed Out')
     return redirect(login_page)
 
 def home(request):
