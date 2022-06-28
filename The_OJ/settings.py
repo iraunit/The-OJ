@@ -143,13 +143,20 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'offline',
+        },
         # For each OAuth based provider, either add a ``SocialApp``
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
             'client_id': config('client_id'),
             'secret': config('secret_key'),
-            'key': ''
+            'key': '',
         }
     }
 }
@@ -157,7 +164,12 @@ GOOGLE_OAUTH2_CLIENT_ID=config('client_id')
 GOOGLE_OAUTH2_CLIENT_SECRET=config('secret_key')
 GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = 'client_secrets.json'
 
-SITE_ID = 1
+SITE_ID = 2
 SOCIALACCOUNT_LOGIN_ON_GET=True
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+'https://www.googleapis.com/auth/userinfo.email',
+'https://www.googleapis.com/auth/userinfo.profile'
+]
