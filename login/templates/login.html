@@ -9,25 +9,28 @@
     <link rel="stylesheet" href="static/login.css">
 </head>
 <body>
-  
     <div class="container">
       <h1 class"welcome">Welcome To CodingKaro</h1>
         <h3>Please Login To Continue</h3>
-        <form>
+        <form method="POST">
+          {% csrf_token %}
             <div class="form-control">
-                <input type="test" required
+                <input type="test" name="username" required
                 >
-                <label>Email / Username</label>
+                <label>Username</label>
             </div>
             <div class="form-control">
-                <input type="password" required
+                <input type="password" name="password" required
                 >
                 <label>Password</label>
             </div>
-            <button class="btn">Login</button>
+            <button class="btn" type="submit">Login</button>
             <p class="text">Don't Have an Account
                 <a href="/register">&nbsp Register</a>
             </p>
+            {% for message in messages %}
+              <p class="text">{{message}}</p>
+            {% endfor %}
             <div class="sig">
               <svg class="g" width="18px" height="18px" viewBox="0 0 18 18" version="1.1">
                 <g id="Google-Button" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">

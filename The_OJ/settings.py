@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'login',
+    'dashboard',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites'
+    
 ]
 
 MIDDLEWARE = [
@@ -152,6 +153,9 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+GOOGLE_OAUTH2_CLIENT_ID=config('client_id')
+GOOGLE_OAUTH2_CLIENT_SECRET=config('secret_key')
+GOOGLE_OAUTH2_CLIENT_SECRETS_JSON = 'client_secrets.json'
 
 SITE_ID = 1
 SOCIALACCOUNT_LOGIN_ON_GET=True
