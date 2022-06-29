@@ -1,6 +1,7 @@
 {% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,20 +9,19 @@
     <title>Document</title>
     <link rel="stylesheet" href="static/login.css">
 </head>
+
 <body>
     <div class="container">
-      <h1 class"welcome">Welcome To CodingKaro</h1>
+        <h1 class "welcome">Welcome To CodingKaro</h1>
         <h3>Please Login To Continue</h3>
         <form method="POST">
-          {% csrf_token %}
+            {% csrf_token %}
             <div class="form-control">
-                <input type="test" name="username" required
-                >
+                <input type="test" name="username" required>
                 <label>Username</label>
             </div>
             <div class="form-control">
-                <input type="password" name="password" required
-                >
+                <input type="password" name="password" required>
                 <label>Password</label>
             </div>
             <button class="btn" type="submit">Login</button>
@@ -29,10 +29,10 @@
                 <a href="/register">&nbsp Register</a>
             </p>
             {% for message in messages %}
-              <p class="text">{{message}}</p>
+            <p class="text">{{message}}</p>
             {% endfor %}
             <div class="sig">
-              <svg class="g" width="18px" height="18px" viewBox="0 0 18 18" version="1.1">
+                <svg class="g" width="18px" height="18px" viewBox="0 0 18 18" version="1.1">
                 <g id="Google-Button" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
                   <g id="G" sketch:type="MSArtboardGroup">
                     <g id="Group-Copy" sketch:type="MSLayerGroup">
@@ -48,12 +48,13 @@
                   </g>
                 </g>
               </svg>
-              <img class="g" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABGdBTUEAALGPC/xhBQAABWtJREFUWAm9WHtMW1UY/865lVLLe4MydcMNEKRB7ADDmIQNRAwxasHX9gfxjykm+8M/MNNkRuuDZHMucZtmI/E/s4fGBBdgTsZoF50kvJa4VIyYuOA2WpiU8ShltPf4neJtLvTe9uLoTtqec7/n75z7fd85pwRW2W5WWbIEpqtlhJURQiyEQToDSAPCRGDgQnP8O0qAXADR+0OGw8mfNTeiUZK4qkteoQBN6LQSEIkmPYYNoA9APGjqGWrTohPVsLu6pAYYOYQQirQYVJVhMChCYF9mz1CPqgwycNLKbSQnR++qKjmKS99112C4CwLFFGj3eFXpx7YIfhVX6O9t5jT9/YbzaKVUGe7dURmws6aLAy8oWdGtJLrKH8sghrhuBFO4krcWzxhU8yCSL9RsLQPkNJvjiEH/PS5bDMHAcyZHP05YuS0DtN5kOIJgtimLhlEHMIc6RQZ9DEQ3MIa5J2RQYMVAaR3aKZNrLK1MZDBcPhRDYztLKwUKDrkRpTGmcS/4/c2mS1d6lfgSzV1VWg7AMDtJuVYwXDcI6NuXQNjpKf6VMVogGVTqcTUOnOjp32/DwqLEX0mz7wBdgVDSAgFyIdJrkusFAfm6hWf9V9e1e89vBPArVwLMjE8xM96RK8diHPQuAG3UF3ogsfEPoCkLYX4wVk7cCzDcMfG0QUpCom4Mh/GcwHwU5jqyYHEkmT8iATwzt8XN2YODt5cIsf2lRqPwogSGuyLxIhgb/oL4ypv4wPiOefhegeH+dUBoBR/IG986DeXjIGzweuZOPnBEzlMbV344W6PG00LH2BHtHyRc5HVItQjGbZ65bHQ4Z7UYFHTQpUUukozZ5tRTAuxBVSERBlR5MWCkQyYWVoD/ojfcAwPiDqfGjkKoYFIuOrHzGdGyyIQkDkg1nfF1miJaWGOmyMg/FF/LDVW7FEpUeTFgBIC5eJZdxa9Fyf7wYqrZ/KU5wbnXETXTsJqfVbIhp+HpcyPunlvlNNk48AscvqUDJv6EtahRxsCTBMDX8znQ6n10i2EdeQt5LXK+0tj+XqLiCVAuW9Uy/RmeXhUB4YSugc0m0rm5wHeo5JMUZ0Ud7Jt5Ao57C3BLxyhi0Fzc+pRqJkp60friNwbuY0AbVOUI4JEZ4aZaYWpepMGi9qc/CV6bqoSf72SG9LBqp0JS8oEQ4X8OkjblvY4bwMNq6iKInZwXTHuXqP/mnO8h2DNVATdEY5gOgnpz65n6g2EMjYQdLZ7HMX4OqYoz8JLFSTvnC/zn2MLCbyM51dYAUNU0R4PbN9Tnx48V/m7HcyVGmba286Pp7ZQIHXi5TFHVIOJR+/uZ5zg/eEDjA8spKx5hqYOPIzbGegOMNV/Z3RbxCFt0xvqIjtG39dPVu/S3dicQ3MeVGgbzlM8vZvfakic5PwSIPxSfbjjOXw8fR22M73OsE680fXgjdYuU6SkjWzBjs3E1ef2qQ1vBkBDmc8Hg3gs0kBpmFmPnXcf+pFA4LANktpnjDHl5DlxerTePMAdqBIIJw0HpfPkhEVwdx7h/tNZpM9+RiMEYkh4mHBOB9c/nt1OBPINIVeNJkl9VTxdgMfEyLmocgsrFng0zv//pftumObmdZSskMcxf1aYZEoxYF2JzldbNlg7HX2+qc9hSr0k+pV5xt3fu+XFyany+Am8axyTBteqx0HbMgP1JJTDch+IKyZ2XnLLWMIp/xwApktNXO8Y6MYHb1CeDu9r4JFXLRlRAQcc2oJZc68uU0iY8+FciOG16S55H8c+1z9m0v3Wwqd0bbSKaDUuGLCfrs4hAavEOX4YLbMGppqORNHy9+IFxhDqBo+uI+RLe+buGXm0blnS19P8CWL3OY1MuAyEAAAAASUVORK5CYII=">
-              <a class="google-login" href="{% provider_login_url 'google' %}"> Sign in with Google</a>
+                <img class="g" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABGdBTUEAALGPC/xhBQAABWtJREFUWAm9WHtMW1UY/865lVLLe4MydcMNEKRB7ADDmIQNRAwxasHX9gfxjykm+8M/MNNkRuuDZHMucZtmI/E/s4fGBBdgTsZoF50kvJa4VIyYuOA2WpiU8ShltPf4neJtLvTe9uLoTtqec7/n75z7fd85pwRW2W5WWbIEpqtlhJURQiyEQToDSAPCRGDgQnP8O0qAXADR+0OGw8mfNTeiUZK4qkteoQBN6LQSEIkmPYYNoA9APGjqGWrTohPVsLu6pAYYOYQQirQYVJVhMChCYF9mz1CPqgwycNLKbSQnR++qKjmKS99112C4CwLFFGj3eFXpx7YIfhVX6O9t5jT9/YbzaKVUGe7dURmws6aLAy8oWdGtJLrKH8sghrhuBFO4krcWzxhU8yCSL9RsLQPkNJvjiEH/PS5bDMHAcyZHP05YuS0DtN5kOIJgtimLhlEHMIc6RQZ9DEQ3MIa5J2RQYMVAaR3aKZNrLK1MZDBcPhRDYztLKwUKDrkRpTGmcS/4/c2mS1d6lfgSzV1VWg7AMDtJuVYwXDcI6NuXQNjpKf6VMVogGVTqcTUOnOjp32/DwqLEX0mz7wBdgVDSAgFyIdJrkusFAfm6hWf9V9e1e89vBPArVwLMjE8xM96RK8diHPQuAG3UF3ogsfEPoCkLYX4wVk7cCzDcMfG0QUpCom4Mh/GcwHwU5jqyYHEkmT8iATwzt8XN2YODt5cIsf2lRqPwogSGuyLxIhgb/oL4ypv4wPiOefhegeH+dUBoBR/IG986DeXjIGzweuZOPnBEzlMbV344W6PG00LH2BHtHyRc5HVItQjGbZ65bHQ4Z7UYFHTQpUUukozZ5tRTAuxBVSERBlR5MWCkQyYWVoD/ojfcAwPiDqfGjkKoYFIuOrHzGdGyyIQkDkg1nfF1miJaWGOmyMg/FF/LDVW7FEpUeTFgBIC5eJZdxa9Fyf7wYqrZ/KU5wbnXETXTsJqfVbIhp+HpcyPunlvlNNk48AscvqUDJv6EtahRxsCTBMDX8znQ6n10i2EdeQt5LXK+0tj+XqLiCVAuW9Uy/RmeXhUB4YSugc0m0rm5wHeo5JMUZ0Ud7Jt5Ao57C3BLxyhi0Fzc+pRqJkp60friNwbuY0AbVOUI4JEZ4aZaYWpepMGi9qc/CV6bqoSf72SG9LBqp0JS8oEQ4X8OkjblvY4bwMNq6iKInZwXTHuXqP/mnO8h2DNVATdEY5gOgnpz65n6g2EMjYQdLZ7HMX4OqYoz8JLFSTvnC/zn2MLCbyM51dYAUNU0R4PbN9Tnx48V/m7HcyVGmba286Pp7ZQIHXi5TFHVIOJR+/uZ5zg/eEDjA8spKx5hqYOPIzbGegOMNV/Z3RbxCFt0xvqIjtG39dPVu/S3dicQ3MeVGgbzlM8vZvfakic5PwSIPxSfbjjOXw8fR22M73OsE680fXgjdYuU6SkjWzBjs3E1ef2qQ1vBkBDmc8Hg3gs0kBpmFmPnXcf+pFA4LANktpnjDHl5DlxerTePMAdqBIIJw0HpfPkhEVwdx7h/tNZpM9+RiMEYkh4mHBOB9c/nt1OBPINIVeNJkl9VTxdgMfEyLmocgsrFng0zv//pftumObmdZSskMcxf1aYZEoxYF2JzldbNlg7HX2+qc9hSr0k+pV5xt3fu+XFyany+Am8axyTBteqx0HbMgP1JJTDch+IKyZ2XnLLWMIp/xwApktNXO8Y6MYHb1CeDu9r4JFXLRlRAQcc2oJZc68uU0iY8+FciOG16S55H8c+1z9m0v3Wwqd0bbSKaDUuGLCfrs4hAavEOX4YLbMGppqORNHy9+IFxhDqBo+uI+RLe+buGXm0blnS19P8CWL3OY1MuAyEAAAAASUVORK5CYII=">
+                <!-- <a class="google-login" href="{% provider_login_url 'google' %}"> Sign in with Google</a> -->
+                <a class="google-login" href="{% provider_login_url 'google' %}"> Sign in with Google</a>
             </div>
         </form>
     </div>
     <script src="static/login.js"></script>
 </body>
-</html>
 
+</html>
