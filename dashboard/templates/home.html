@@ -27,12 +27,12 @@
         <div class="questions">
             {% for problem in response  %}
             <div class="home">
-                <div class="home-item click" id="question" style="cursor: pointer">
+                <div class="home-item click" id="question" style="cursor: context-menu;">
                     <a  class="home-link" style="font-size:1.3rem">{{problem.problem_name}}
                         <i class="material-icons add click" id="add">keyboard_arrow_down</i>
                         <i class="material-icons click" id="remove">keyboard_arrow_up</i>
                     </a>
-                    <div class="answer solve" id="uni" onclick="window.open('problem/{{problem.problem_id}}','mywindow');">
+                    <div class="answer solve" style="cursor: pointer;" id="uni" onclick="window.open('problem/{{problem.problem_id}}','mywindow');">
                         <p style="font-size:1.1rem"> {{problem.description}}</p>
                         <p style="font-size:0.9rem">Tags: {{problem.tags}}<br> Level: {{problem.difficulty}} </p>
                        

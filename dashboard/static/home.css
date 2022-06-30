@@ -91,7 +91,6 @@ section {
 }
 
 .home-link {
-    cursor: progress;
     text-decoration: none;
     color: white;
     background-color: #283042;
@@ -105,10 +104,6 @@ section {
 
 .active #add {
     display: none;
-}
-
-#click {
-    cursor: progress;
 }
 
 #remove {
@@ -154,29 +149,20 @@ section {
     padding: 0.3rem;
 }
 
-#uni {
-    cursor: progress;
-}
-
 #solve {
     text-decoration: none;
     color: rgb(255, 255, 255);
     font-size: 1.5rem;
 }
 
-
-/* .home-link:target .answer {
-    max-height: 20rem;
-} */
-
 #textarea {
-    font-size: 20px;
+    font-size: 1rem;
     color: black;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     border: blue 1px solid;
     min-height: 25rem;
     min-width: 50rem;
-    /* max-width: 500px; */
+    padding: 1rem;
 }
 
 #tags {
