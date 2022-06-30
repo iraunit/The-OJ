@@ -84,6 +84,7 @@ section {
     border-radius: 1rem;
     margin-bottom: 1rem;
     padding: 0.8rem;
+    min-width: 50rem;
     box-shadow: .5rem 2px .5rem rgba(0, 0, 0, 0.1);
 }
 
@@ -91,7 +92,6 @@ section {
     text-decoration: none;
     color: white;
     background-color: #283042;
-    min-width: 10rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -147,6 +147,17 @@ section {
     padding: 0.3rem;
 }
 
-.home-link:target .answer {
-    max-height: 20rem;
+#uni {
+    cursor: pointer;
 }
+
+#solve {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-size: 1.5rem;
+}
+
+
+/* .home-link:target .answer {
+    max-height: 20rem;
+} */

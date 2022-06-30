@@ -40,4 +40,17 @@ def home(request):
      })
 
 
-
+@login_required(login_url='/login')
+def ViewProblem(request,problem_id):
+     user_email="Anonymous"
+     if request.user:
+          id=request.user.id
+          user = User.objects.get(id=id)
+          user_email = user.first_name + " "+user.last_name
+          if user_email==" ":
+               user_email=request.user
+     problem_to_show=Problem.objects(problem_id=problem_id)
+     return render(request,'problem.html',{
+          "user_email":user_email,
+          "response":problem_to_show
+     })
