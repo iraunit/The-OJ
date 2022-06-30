@@ -1,7 +1,8 @@
-from rest_framework import serializers
-from .models import Users
+from rest_framework_mongoengine.serializers import DocumentSerializer
+from .models import Problem
 
-class UsersSerializers(serializers.ModelSerializer):
+
+class UsersSerializers(DocumentSerializer):
     class Meta:
-        model=Users
-        fields=("email","total_score","problems_solved")
+        model=Problem
+        fields=("problem_name","description","difficulty","tags","score","solved_by")

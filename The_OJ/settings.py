@@ -48,8 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'rest_framework'
-    
+    'rest_framework',
+    'rest_framework_mongoengine'
 ]
 
 # remove in production add domains instead
@@ -98,8 +98,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     },
 
-    'users': {
+    'database': {
         'ENGINE': 'djongo',
+        'ENFORCE_SCHEMA':'False',
         'CLIENT': {
             "host": "mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority",
             "name": "Users",
