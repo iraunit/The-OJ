@@ -7,12 +7,18 @@ from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from .models import Problem
 from .serializers import UsersSerializers
+import pymongo
+from decouple import config
 
+connect_string="mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority"
+my_client = pymongo.MongoClient(connect_string)
+problem_database=my_client["problem_list"]
+new_problem=problem_database['problem']
 
 # Create your views here.
 @csrf_exempt
 @login_required(login_url='/login')
-def home(request,idd=0):
+def home(request):
      user_email="Anonymous"
      if request.user:
           id=request.user.id
@@ -24,26 +30,11 @@ def home(request,idd=0):
      #databse code
      
      if request.method=='GET':
-          users=Problem.objects
-          json_data=users.to_json()
-          users_serializer=UsersSerializers(data=users)
-          if users_serializer.is_valid():
-               response= JsonResponse(users_serializer.data,safe=False)
-               return response
+          users=Problem.objects();
           return render(request,'home.html',{
           "user_email":user_email,
           "response":users  
            })
-     # elif request.method=='POST':
-          # user_data=JSONParser().parse(request)
-          # users_serializer=UsersSerializers(data=user_data)
-          # if users_serializer.is_valid():
-          #      users_serializer.save()
-          #      return JsonResponse("done",safe=False)
-          # else:
-          #       return JsonResponse("failed",safe=False)
-
-
      return render(request,'home.html',{
           "user_email":user_email,
      })

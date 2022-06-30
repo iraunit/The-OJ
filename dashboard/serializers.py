@@ -7,3 +7,6 @@ class UsersSerializers(DocumentSerializer):
         model=Problem
         depth=6
         fields=("problem_name","description","difficulty","tags","score","solved_by")
+
+
+
