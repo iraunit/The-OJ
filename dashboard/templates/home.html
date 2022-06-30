@@ -27,7 +27,7 @@
         <div class="questions">
             {% for problem in response  %}
             <div class="home">
-                <div class="home-item" id="question">
+                <div class="home-item click" id="question" style="cursor: pointer">
                     <a  class="home-link" style="font-size:1.3rem">{{problem.problem_name}}
                         <i class="material-icons add click" id="add">keyboard_arrow_down</i>
                         <i class="material-icons click" id="remove">keyboard_arrow_up</i>

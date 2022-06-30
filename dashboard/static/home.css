@@ -12,6 +12,8 @@ after {
 }
 
 body {
+    display: flex;
+    flex-direction: column;
     padding-top: 3rem;
     font-family: 'Roboto' 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     justify-content: center;
@@ -89,6 +91,7 @@ section {
 }
 
 .home-link {
+    cursor: progress;
     text-decoration: none;
     color: white;
     background-color: #283042;
@@ -102,6 +105,10 @@ section {
 
 .active #add {
     display: none;
+}
+
+#click {
+    cursor: progress;
 }
 
 #remove {
@@ -148,7 +155,7 @@ section {
 }
 
 #uni {
-    cursor: pointer;
+    cursor: progress;
 }
 
 #solve {
@@ -161,3 +168,56 @@ section {
 /* .home-link:target .answer {
     max-height: 20rem;
 } */
+
+#textarea {
+    font-size: 20px;
+    color: black;
+    border-radius: 5px;
+    border: blue 1px solid;
+    min-height: 25rem;
+    min-width: 50rem;
+    /* max-width: 500px; */
+}
+
+#tags {
+    width: 500px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.tag {
+    background-color: rgb(204, 62, 26);
+    border-radius: 25px;
+    position: relative;
+    color: white;
+    padding: 5px 10px;
+    margin: 5px;
+    display: inline-block;
+}
+
+.btn {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+button {
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 25px;
+    font-family: cursive;
+    outline: none;
+    background-color: rgb(30, 32, 182);
+    border: none;
+    width: 100px;
+    color: rgb(255, 255, 255);
+}
+
+button:hover {
+    transform: scale(0.98);
+}
+
+.highlight {
+    background-color: rgb(47, 0, 255);
+}
