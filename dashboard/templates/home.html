@@ -28,13 +28,13 @@
             {% for problem in response  %}
             <div class="home">
                 <div class="home-item" id="question">
-                    <a href="#" class="home-link">{{problem.problem_name}}
+                    <a href="#" class="home-link" style="font-size:1.3rem">{{problem.problem_name}}
                         <i class="material-icons add" id="add">keyboard_arrow_down</i>
                         <i class="material-icons" id="remove">keyboard_arrow_up</i>
                     </a>
                     <div class="answer" id="uni">
-                        <p> {{problem.description}}</p>
-                        <p>tags && levels</p>
+                        <p style="font-size:1.1rem"> {{problem.description}}</p>
+                        <p style="font-size:0.9rem">Tags: {{problem.tags}}<br> Level: {{problem.difficulty}} </p>
                     </div>
                 </div>
 

@@ -22,7 +22,7 @@ class Problem(Document):
     problem_id = StringField(unique=True,Required=True)
     problem_name=StringField(Required=True)
     description=StringField(Required=True)
-    difficulty=IntegerField()
+    difficulty=StringField()
     tags=StringField()
     score=FloatField()
     solved_by=ListField()
