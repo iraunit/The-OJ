@@ -54,3 +54,8 @@ def ViewProblem(request,problem_id):
           "user_email":user_email,
           "response":problem_to_show
      })
+
+def submitProblem(request,problem_id):
+     if request.method=='POST':
+          print(request.POST['code_by_user'])
+     return render(request,'login.html')

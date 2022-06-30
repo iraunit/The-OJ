@@ -39,7 +39,7 @@
                 
             </div>
             
-            {% endfor %}
+            
             
 
 
@@ -48,13 +48,16 @@
 
     </section> 
     <div class="last">
-        <textarea  id="textarea" placeholder="Write Your Code Here"></textarea>
+        <form method="POST" action="submit/{{problem.problem_id}}">
+            {% csrf_token %}
+        <textarea  id="textarea" placeholder="Write Your Code Here" name="code_by_user"></textarea>
 
         <div class="btn">
-            <button id="clear">Submit</button>
+            <button id="clear" type="submit">Submit</button>
         </div> 
+    </form>
     </div>
-  
+    {% endfor %}
     <script src="{% static 'home.js' %}"></script>
 </body>
 
