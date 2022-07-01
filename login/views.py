@@ -53,8 +53,7 @@ def logoutUser(request):
 
 def home(request):
     try:
-        old_user=Users.objects(email_id="request.user.email").get()
-        print(old_user)
+        Users.objects(email_id=request.user.email).get()
     except DoesNotExist:
         user_name=request.user.first_name + " "+request.user.last_name
         total_score=0.0

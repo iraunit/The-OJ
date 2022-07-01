@@ -2,12 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
-import json,_json
-from rest_framework.parsers import JSONParser
-from django.http.response import JsonResponse
 from .models import Problem,Users,SubmittedProblem
-from .serializers import UsersSerializers
 import pymongo
+from mongoengine import *
 from decouple import config
 
 connect_string="mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority"
@@ -58,9 +55,15 @@ def ViewProblem(request,problem_id):
 @login_required(login_url='/login')
 def submitProblem(request,problem_id):
      if request.method=='POST':
-          print(request.POST['code_by_user'])
-     id=request.user.id
-     current_user = User.objects.get(id=id)
-     user=User(email_id=current_user.email)
-     
+          id=request.user.id
+          current_user = User.objects.get(id=id)
+          user=Users.objects(email_id=current_user.email).get()
+          current_problem=Problem.objects(problem_id=problem_id).get()
+          verdict="Passed"
+          code=request.POST['code_by_user']
+          email_id=current_user.email
+          language="C++"
+          submission=SubmittedProblem(problem_id=problem_id,verdict=verdict,code=code,email_id=email_id,language=language)
+          user.update(push__solved_problem=problem_id)
+          current_problem.update(push__solved_by=submission)
      return render(request,'verdict.html')
