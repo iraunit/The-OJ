@@ -1,21 +1,40 @@
-
-from sqlite3 import connect
-from django.forms import FloatField, IntegerField
+import datetime
+import json
+from django.forms import DateTimeField, EmailField, FloatField
 from mongoengine import *
-from mongoengine import Document
+from mongoengine import Document,connect
 from mongoengine.document import Document
 from mongoengine.fields import StringField, ListField
 from decouple import config
 connect_string="mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority"
 # my_client = pymongo.MongoClient(connect_string)
-connect(db="problem_list", host=connect_string, username=config('MONGO_ID'), password=config('MONGO_PASS'))
+connect(db="my_database", host=connect_string, username=config('MONGO_ID'), password=config('MONGO_PASS'))
 
-# Create your models here.
-# class Users(models.Model):
-#     _id=models.CharField(max_length=250,default="")
-#     email=models.EmailField(primary_key=True)
-#     total_score=models.FloatField(default=0.0)
-#     problems_solved=models.TextField(default="")
+class SubmittedProblem(Document):
+    problem_id=StringField(Required=True)
+    verdict=StringField(Required=True)
+    submitted_date=DateTimeField(default=datetime.datetime.now)
+    code=StringField()
+    email_id=EmailField(required=True)
+    language=StringField()
+
+    def json(self):
+        submitted_problem_dict = {
+            "problem_id":self.problem_id,
+            "verdict":self.verdict,
+            "submitted_date":self.submitted_date,
+            "code":self.code,
+            "email_id":self.email_id,
+            "language":self.language,
+        }
+        return json.dumps(submitted_problem_dict)
+    
+    meta = {
+        "indexes":["problem_id"],
+        "indexes":["email_id"],
+        "ordering":["-date_created"]
+    }
+
 
 
 class Problem(Document):
@@ -25,7 +44,9 @@ class Problem(Document):
     difficulty=StringField()
     tags=StringField()
     score=FloatField()
-    solved_by=ListField()
+    solved_by=ListField(SubmittedProblem)
+    example_testcase=ListField()
+    test_case=ListField()
 
     def json(self):
         problem_dict = {
@@ -36,7 +57,10 @@ class Problem(Document):
             "tags":self.tags,
             "score":self.score,
             "solved_by":self.solved_by,
+            "example_testcase":self.example_testcase,
+            "test_case":self.test_case,
         }
+        return json.dumps(problem_dict)
     
     meta = {
         "indexes":["problem_id"],
@@ -44,8 +68,24 @@ class Problem(Document):
     }
 
 
-# prob= Problem(
-#     problem_id="hello lol",
-#     problem_name="koi naam nhi hai",
-#     description="lol ho tum"
-# ).save()
+class Users(Document):
+    email_id = StringField(unique=True,Required=True)
+    user_name=StringField(Required=True)
+    total_score=FloatField()
+    solved_problem=ListField()
+
+    def json(self):
+        user_dict = {
+            "email_id":self.email_id,
+            "user_name":self.user_name,
+            "total_score":self.total_score,
+            "solved_problem":self.solved_problem,
+        }
+        return json.dumps(user_dict)
+    
+    meta = {
+        "indexes":["total_score"],
+        "ordering":["-total_score"]
+    }
+
+
