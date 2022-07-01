@@ -1,4 +1,5 @@
 import datetime
+from enum import unique
 import json
 from django.forms import DateTimeField, EmailField, FloatField
 from mongoengine import *
@@ -13,7 +14,7 @@ connect(db="my_database", host=connect_string, username=config('MONGO_ID'), pass
 class SubmittedProblem(EmbeddedDocument):
     problem_id=StringField(Required=True)
     verdict=StringField(Required=True)
-    submitted_date=DateTimeField(default=datetime.datetime.utcnow)
+    submitted_date=DateTimeField(default=datetime.datetime.now)
     code=StringField(unique=True)
     user_name=StringField(required=True)
     language=StringField()
@@ -44,7 +45,7 @@ class Problem(Document):
     difficulty=StringField()
     tags=StringField()
     score=FloatField()
-    solved_by=ListField(EmbeddedDocumentField(SubmittedProblem))
+    solved_by=ListField(EmbeddedDocumentField(SubmittedProblem,unique=True))
     example_testcase=ListField()
     test_case=ListField()
 

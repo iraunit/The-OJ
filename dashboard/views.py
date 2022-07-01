@@ -56,6 +56,13 @@ def ViewProblem(request,problem_id):
 
 @login_required(login_url='/login')
 def submitProblem(request,problem_id):
+     user_email="Anonymous"
+     if request.user:
+          id=request.user.id
+          user = User.objects.get(id=id)
+          user_email = user.first_name + " "+user.last_name
+          if user_email==" ":
+               user_email=request.user
      if request.method=='POST':
           id=request.user.id
           current_user = User.objects.get(id=id)
@@ -73,10 +80,11 @@ def submitProblem(request,problem_id):
      array_curr=list(current_problem)
      all_submission=array_curr[0]["solved_by"]
      submissions=[]
-     for i in range(len(all_submission)):
-          submissions.append(all_submission[i])
+     for i in reversed(all_submission):
+          submissions.append(i)
      # return HttpResponse(template/vertdict.html)
      print(len(submissions))
      return render(request,'verdict.html',{
+          "user_email":user_email,
           "submissions":submissions
      })
