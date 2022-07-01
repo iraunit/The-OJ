@@ -1,6 +1,6 @@
 from xml.dom.minidom import Document
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -56,13 +56,7 @@ def ViewProblem(request,problem_id):
 
 @login_required(login_url='/login')
 def submitProblem(request,problem_id):
-     user_email="Anonymous"
-     if request.user:
-          id=request.user.id
-          user = User.objects.get(id=id)
-          user_email = user.first_name + " "+user.last_name
-          if user_email==" ":
-               user_email=request.user
+     user_name="Anonymous"
      if request.method=='POST':
           id=request.user.id
           current_user = User.objects.get(id=id)
@@ -71,11 +65,18 @@ def submitProblem(request,problem_id):
           verdict="Passed"
           code=request.POST['code_by_user']
           user_name=current_user.first_name + " "+current_user.last_name
+          if user_name==" ":
+               user_name=request.user.username
           language="C++"
           current_submission_by_user=SubmittedProblem(problem_id=problem_id,verdict=verdict,code=code,user_name=user_name,language=language)
           user.update(push__solved_problem=problem_id)
           current_problem.update(push__solved_by=current_submission_by_user)
      # current_problem=Problem.objects.fields(problem_id=problem_id,slice__solved_by=[0,10]).all()
+     
+     return showLeaderBoard(request,problem_id=problem_id)
+
+
+def showLeaderBoard(request,problem_id):
      current_problem=(new_problem.find( { 'problem_id':problem_id } ))
      array_curr=list(current_problem)
      all_submission=array_curr[0]["solved_by"]
@@ -84,7 +85,14 @@ def submitProblem(request,problem_id):
           submissions.append(i)
      # return HttpResponse(template/vertdict.html)
      print(len(submissions))
+     user_name="Anonymous"
+     if request.user:
+          id=request.user.id
+          user = User.objects.get(id=id)
+          user_name = user.first_name + " "+user.last_name
+          if user_name==" ":
+               user_name=request.user
      return render(request,'verdict.html',{
-          "user_email":user_email,
+          "user_email":user_name,
           "submissions":submissions
      })
