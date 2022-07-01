@@ -6,7 +6,7 @@ from mongoengine import Document,connect
 from mongoengine.document import Document
 from mongoengine.fields import StringField, ListField,EmbeddedDocument,EmbeddedDocumentField
 from decouple import config
-connect_string="mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority"
+connect_string="mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority&connectTimeoutMS=60000"
 # my_client = pymongo.MongoClient(connect_string)
 connect(db="my_database", host=connect_string, username=config('MONGO_ID'), password=config('MONGO_PASS'))
 
@@ -14,8 +14,8 @@ class SubmittedProblem(EmbeddedDocument):
     problem_id=StringField(Required=True)
     verdict=StringField(Required=True)
     submitted_date=DateTimeField(default=datetime.datetime.utcnow)
-    code=StringField()
-    email_id=EmailField(required=True)
+    code=StringField(unique=True)
+    user_name=StringField(required=True)
     language=StringField()
 
     def json(self):
@@ -24,15 +24,15 @@ class SubmittedProblem(EmbeddedDocument):
             "verdict":self.verdict,
             "submitted_date":self.submitted_date,
             "code":self.code,
-            "email_id":self.email_id,
+            "user_name":self.email_id,
             "language":self.language,
         }
         return json.dumps(submitted_problem_dict)
     
     meta = {
         "indexes":["problem_id"],
-        "indexes":["email_id"],
-        "ordering":["-date_created"]
+        "indexes":["user_name"],
+        "ordering":["date_created"]
     }
 
 
@@ -88,7 +88,7 @@ class Users(Document):
         "ordering":["-total_score"]
     }
 
-sub=SubmittedProblem(problem_id="problem submit ho gya",verdict="pass ho gya code",email_id="meraemail@gmail.com")
+sub=SubmittedProblem(problem_id="problem submit ho gya",verdict="pass ho gya code",user_name="Raunit Verma")
 
 problem=Problem(
     problem_id = "ye mera id hai",
