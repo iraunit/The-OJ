@@ -59,5 +59,8 @@ def ViewProblem(request,problem_id):
 def submitProblem(request,problem_id):
      if request.method=='POST':
           print(request.POST['code_by_user'])
+     id=request.user.id
+     current_user = User.objects.get(id=id)
+     user=User(email_id=current_user.email)
      
      return render(request,'verdict.html')

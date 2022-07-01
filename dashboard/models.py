@@ -13,7 +13,7 @@ connect(db="my_database", host=connect_string, username=config('MONGO_ID'), pass
 class SubmittedProblem(EmbeddedDocument):
     problem_id=StringField(Required=True)
     verdict=StringField(Required=True)
-    submitted_date=DateTimeField(default=datetime.datetime.now)
+    submitted_date=DateTimeField(default=datetime.datetime.utcnow)
     code=StringField()
     email_id=EmailField(required=True)
     language=StringField()
