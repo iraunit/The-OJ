@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json,_json
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
-from .models import Problem
+from .models import Problem,Users,SubmittedProblem
 from .serializers import UsersSerializers
 import pymongo
 from decouple import config
@@ -55,7 +55,9 @@ def ViewProblem(request,problem_id):
           "response":problem_to_show
      })
 
+@login_required(login_url='/login')
 def submitProblem(request,problem_id):
      if request.method=='POST':
           print(request.POST['code_by_user'])
-     return render(request,'login.html')
+     
+     return render(request,'verdict.html')
