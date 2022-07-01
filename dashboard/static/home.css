@@ -182,28 +182,33 @@ section {
 }
 
 .btn {
-    position: relative;
+    /* position: relative; */
     align-items: center;
     justify-content: center;
     display: flex;
+    width: auto;
 }
 
-button {
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 25px;
+.btn button {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    font-size: 2rem;
     font-family: cursive;
     outline: none;
     background-color: rgb(30, 32, 182);
     border: none;
-    width: 100px;
+    width: 15rem;
     color: rgb(255, 255, 255);
 }
 
 button:hover {
-    transform: scale(0.98);
+    transform: scale(0.5);
 }
 
 .highlight {
     background-color: rgb(47, 0, 255);
+}
+
+#clear {
+    width: auto;
 }

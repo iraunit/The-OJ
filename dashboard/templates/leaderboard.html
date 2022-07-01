@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{problem_name}} Submissions</title>
-    <link rel="stylesheet" href="{% static 'verdict.css' %}">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="{% static 'leaderboard.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
@@ -26,31 +26,22 @@
     </nav> 
 
     <div class="container1">
-        <h2>Submissions to The Problem {{problem_name}}</h2>
+        <h2>Leaderboard</h2>
         <ul class="responsive-table">
           <li class="table-header">
             <div class="col col-1">User Name</div>
-            <div class="col col-2">Result</div>
-            <div class="col col-3">Language</div>
-            <div class="col col-4">Runtime (ms)</div>
-            <div class="col col-5">Submitted At</div>
-            <div class="col col-6">Code</div>
+            <div class="col col-2">Total Score</div>
           </li>
-          {% for submission in submissions %}
+          {% for leader in leaders %}
           <li class="table-row">
-            <div class="col col-1" >{{submission.user_name}}</div>
-            <div class="col col-2" >{{submission.verdict}}</div>
-            <div class="col col-3" >{{submission.language}}</div>
-            <div class="col col-4" >{{submission.runtime}}</div>
-            <div class="col col-5" >{{submission.submitted_date}}</div>
-            <div class="col col-6"><a href="#"><i class="material-icons">code</i></a>
-            
-            
-            </div>
+            <div class="col col-1" >{{leader.user_name}}</div>
+            <div class="col col-2" >{{leader.total_score}}</div>
           </li>
           {% endfor %}
         </ul>
       </div>
+
+      
    
     <script src="{% static 'home.js' %}"></script>
     <script>

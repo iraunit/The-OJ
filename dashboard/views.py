@@ -57,6 +57,7 @@ def ViewProblem(request,problem_id):
 @login_required(login_url='/login')
 def submitProblem(request,problem_id):
      user_name="Anonymous"
+     problem_name=""
      if request.method=='POST':
           id=request.user.id
           current_user = User.objects.get(id=id)
@@ -71,12 +72,12 @@ def submitProblem(request,problem_id):
           current_submission_by_user=SubmittedProblem(problem_id=problem_id,verdict=verdict,code=code,user_name=user_name,language=language)
           user.update(push__solved_problem=problem_id)
           current_problem.update(push__solved_by=current_submission_by_user)
+          problem_name=current_problem.problem_name
      # current_problem=Problem.objects.fields(problem_id=problem_id,slice__solved_by=[0,10]).all()
-     
-     return showLeaderBoard(request,problem_id=problem_id)
+     return showLeaderBoard(request,problem_id,problem_name)
 
 
-def showLeaderBoard(request,problem_id):
+def showLeaderBoard(request,problem_id,problem_name):
      current_problem=(new_problem.find( { 'problem_id':problem_id } ))
      array_curr=list(current_problem)
      all_submission=array_curr[0]["solved_by"]
@@ -94,5 +95,21 @@ def showLeaderBoard(request,problem_id):
                user_name=request.user
      return render(request,'verdict.html',{
           "user_email":user_name,
-          "submissions":submissions
+          "submissions":submissions,
+          "problem_name" : problem_name
+     })
+
+
+def AllLeaderBoard(request):
+     user_name="Anonymous"
+     if request.user:
+          id=request.user.id
+          user = User.objects.get(id=id)
+          user_name = user.first_name + " "+user.last_name
+          if user_name==" ":
+               user_name=request.user
+     all_users=Users.objects().all().order_by('-total_score')
+     return render(request,'leaderboard.html',{
+          "user_email":user_name,
+          "leaders":all_users
      })

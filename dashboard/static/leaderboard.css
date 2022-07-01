@@ -67,6 +67,7 @@ nav a {
 .container1 {
     margin-left: auto;
     margin-right: auto;
+    max-width: 30rem;
     padding-left: 1rem;
     padding-right: 1rem;
 }
@@ -86,7 +87,7 @@ h2 small {
     border-radius: 0.3rem;
     padding: 1rem 2rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-bottom: 1.5rem;
 }
 
@@ -109,27 +110,15 @@ h2 small {
 }
 
 .responsive-table .col-1 {
-    flex-basis: 20%;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .responsive-table .col-2 {
-    flex-basis: 15%;
-}
-
-.responsive-table .col-3 {
-    flex-basis: 15%;
-}
-
-.responsive-table .col-4 {
-    flex-basis: 15%;
-}
-
-.responsive-table .col-5 {
-    flex-basis: 20%;
-}
-
-.responsive-table .col-6 {
-    flex-basis: 10%;
+    flex-basis: 50%;
 }
 
 @media all and (max-width: 767px) {

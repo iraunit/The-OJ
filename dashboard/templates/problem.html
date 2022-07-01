@@ -57,7 +57,9 @@
             <button id="clear" type="submit">Submit</button>
         </div> 
     </form>
-    </div>
+    <div class="btn">
+    <button id="clear" type="button" onClick="location.href='submit/{{problem.problem_id}}'">Show Leaderboard</button>
+    </div></div>
     {% endfor %}
     <script src="{% static 'home.js' %}"></script>
     <script>
