@@ -1,7 +1,6 @@
 import datetime
-from enum import unique
 import json
-from django.forms import DateTimeField, EmailField, FloatField
+from django.forms import DateTimeField, FloatField
 from mongoengine import *
 from mongoengine import Document,connect
 from mongoengine.document import Document
@@ -9,7 +8,8 @@ from mongoengine.fields import StringField, ListField,EmbeddedDocument,EmbeddedD
 from decouple import config
 connect_string="mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority&connectTimeoutMS=60000"
 # my_client = pymongo.MongoClient(connect_string)
-connect(db="my_database", host=connect_string, username=config('MONGO_ID'), password=config('MONGO_PASS'))
+connect(db="my_database", host=connect_string)
+
 
 class SubmittedProblem(EmbeddedDocument):
     problem_id=StringField(Required=True)
@@ -36,6 +36,18 @@ class SubmittedProblem(EmbeddedDocument):
         "ordering":["date_created"]
     }
 
+class TestCase(EmbeddedDocument):
+    input=StringField()
+    output=StringField()
+
+    def json(self):
+        test_case_dict = {
+            "input":self.input,
+            "output":self.output
+        }
+        return json.dumps(test_case_dict)
+
+
 
 
 class Problem(Document):
@@ -45,9 +57,8 @@ class Problem(Document):
     difficulty=StringField()
     tags=StringField()
     score=FloatField()
-    solved_by=ListField(EmbeddedDocumentField(SubmittedProblem,unique=True))
-    example_testcase=ListField()
-    test_case=ListField()
+    solved_by=ListField(EmbeddedDocumentField(SubmittedProblem))
+    test_case=ListField(EmbeddedDocumentField(TestCase))
 
     def json(self):
         problem_dict = {
@@ -58,7 +69,6 @@ class Problem(Document):
             "tags":self.tags,
             "score":self.score,
             "solved_by":self.solved_by,
-            "example_testcase":self.example_testcase,
             "test_case":self.test_case,
         }
         return json.dumps(problem_dict)
@@ -89,16 +99,14 @@ class Users(Document):
         "ordering":["-total_score"]
     }
 
-sub=SubmittedProblem(problem_id="problem submit ho gya",verdict="pass ho gya code",user_name="Raunit Verma")
+# sub=SubmittedProblem(problem_id="problem submit ho gya",verdict="pass ho gya code",user_name="Raunit Verma")
 
 problem=Problem(
-    problem_id = "ye mera id hai",
-    problem_name="ye mera naam hai",
-    description="ye mera des hai",
-    difficulty="mai difficult hu",
-    tags="mera tags ye hai",
-    score=78.94,
-    solved_by=[sub],
-    example_testcase=["13","343"],
-    test_case=["34","332","23423"]
+    problem_id = "find_factorial_of_a_number",
+    problem_name="Crazy Factorial",
+    description="Given an integer n find the factorial of the integer n.",
+    difficulty="Easy",
+    tags="Math",
+    score=10,
+    test_case=[TestCase(input="5",output="120"),TestCase(input="7",output="5040"),TestCase(input="10",output="3628800"),TestCase(input="4",output="24")]
 )
