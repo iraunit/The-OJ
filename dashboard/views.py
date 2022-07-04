@@ -1,3 +1,4 @@
+from genericpath import exists
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -85,7 +86,6 @@ def showLeaderBoard(request,problem_id,problem_name):
      for i in reversed(all_submission):
           submissions.append(i)
      # return HttpResponse(template/vertdict.html)
-     print(len(submissions))
      user_name="Anonymous"
      if request.user:
           id=request.user.id
@@ -122,17 +122,19 @@ def handle_submission(submission,user_name, testcases):
         destination.write(submission)
 
     subprocess.run(["g++", code_file_name, "-o", exec_file_name])
-#     subprocess.run(["g++", code_file_name, "-o", "output.exe"])
-#     subprocess.run(["g++", "input.cpp", "-o", "output.exe"])
+    file_exists=exists(exec_file_name)
+    if not file_exists:
+         return "RunTime Error"
 
     for testcase in testcases:
 
         input = testcase.input
         input = bytes(input, 'utf-8')
-
-        output = subprocess.run([exec_file_name], capture_output=True, input = input, timeout=10)
-        output = output.stdout.decode("utf-8")
-
+        try:
+               output = subprocess.run([exec_file_name], capture_output=True, input = input, timeout=5)
+               output = output.stdout.decode("utf-8")
+        except:
+             return "TLE"
         if output != testcase.output:
             return "Wrong Answer"
 

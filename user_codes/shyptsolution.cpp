@@ -45,13 +45,9 @@ void solve() {
 
 int n;
 cin>>n;
-int ans=1;
-for (int i = 1; i <=n; i++)
-{
-  ans*=i;
+while(true){
+n++;
 }
-
-cout<<123;
 
 
 }
