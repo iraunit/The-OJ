@@ -54,11 +54,14 @@ def logoutUser(request):
 def home(request):
     try:
         Users.objects(email_id=request.user.email).get()
-    except DoesNotExist:
-        user_name=request.user.first_name + " "+request.user.last_name
-        total_score=0.0
-        solved_problem=[]
-        Users(email_id=request.user.email,user_name=user_name,total_score=total_score,solved_problem=solved_problem).save()
+    except:
+        try:
+            user_name=request.user.first_name + " "+request.user.last_name
+            total_score=0.0
+            solved_problem=[]
+            Users(email_id=request.user.email,user_name=user_name,total_score=total_score,solved_problem=solved_problem).save()
+        except:
+            return login_page(request)
     return redirect('/home')
 
 

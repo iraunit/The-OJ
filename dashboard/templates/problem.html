@@ -18,6 +18,8 @@
             <ul>
                 <li><a href="/home">Home</a></li>
                 <li><a href="/leaderboard">Leaderboard</a></li>
+                <li><a href="/submissions/{{problem_id}}" type="button">All Submissions</a></li>
+                <li><a href="/mysubmissions/{{problem_id}}" type="button">My Submissions</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
 
@@ -57,9 +59,10 @@
             <button id="clear" type="submit">Submit</button>
         </div> 
     </form>
-    <div class="btn">
+    {% comment %} <div class="btn">
     <button id="clear" type="button" onClick="location.href='submit/{{problem.problem_id}}'">Show Leaderboard</button>
-    </div></div>
+    </div> {% endcomment %}
+</div>
     {% endfor %}
     <script src="{% static 'home.js' %}"></script>
     <script>

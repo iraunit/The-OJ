@@ -17,16 +17,17 @@ new_problem=problem_database['problem']
 
 # Create your views here.
 @csrf_exempt
-@login_required(login_url='/login')
 def home(request):
      user_email="Anonymous"
-     if request.user:
-          id=request.user.id
-          user = User.objects.get(id=id)
-          user_email = user.first_name + " "+user.last_name
-          if user_email==" ":
-               user_email=request.user
-
+     try:
+          if request.user:
+               id=request.user.id
+               user = User.objects.get(id=id)
+               user_email = user.first_name + " "+user.last_name
+               if user_email==" ":
+                    user_email=request.user
+     except:
+          print('no user Found')
      #databse code
      
      if request.method=='GET':
@@ -52,7 +53,8 @@ def ViewProblem(request,problem_id):
      problem_to_show=Problem.objects(problem_id=problem_id)
      return render(request,'problem.html',{
           "user_email":user_email,
-          "response":problem_to_show
+          "response":problem_to_show,
+          "problem_id":problem_id
      })
 
 @login_required(login_url='/login')
@@ -72,18 +74,20 @@ def submitProblem(request,problem_id):
           submitted_problem_by_users=list(user.solved_problem)
           test_cases=list(current_problem.test_case)
           verdict= handle_submission(code,user.email_id,test_cases)
+          user_email=user.email_id
           if verdict=="Accepted":
                if current_problem.problem_id not in submitted_problem_by_users:
                     user.update(push__solved_problem=problem_id)
                     user.update(set__total_score=current_problem.score+user.total_score)
-          current_submission_by_user=SubmittedProblem(problem_id=problem_id,verdict=verdict,code=code,user_name=user_name,language=language)
+          current_submission_by_user=SubmittedProblem(problem_id=problem_id,verdict=verdict,code=code,user_email=user_email,user_name=user_name,language=language)
           current_problem.update(push__solved_by=current_submission_by_user)
      # current_problem=Problem.objects.fields(problem_id=problem_id,slice__solved_by=[0,10]).all()
-     return showLeaderBoard(request,problem_id,problem_name)
+     return showLeaderBoard(request,problem_id)
 
-
-def showLeaderBoard(request,problem_id,problem_name):
+@login_required(login_url='/login')
+def showLeaderBoard(request,problem_id):
      current_problem=(new_problem.find( { 'problem_id':problem_id } ))
+     problem_name=current_problem[0]["problem_name"]
      array_curr=list(current_problem)
      all_submission=array_curr[0]["solved_by"]
      submissions=[]
@@ -103,7 +107,36 @@ def showLeaderBoard(request,problem_id,problem_name):
           "problem_name" : problem_name
      })
 
+@login_required(login_url='/login')
+def mySubmissions(request,problem_id):
+     current_problem=(new_problem.find( { 'problem_id':problem_id } ))
+     problem_name=current_problem[0]["problem_name"]
+     array_curr=list(current_problem)
+     all_submission=array_curr[0]["solved_by"]
+     submissions=[]
+     id=request.user.id
+     current_user = User.objects.get(id=id)
+     for i in reversed(all_submission):
+          email=i['user_email']
+          if email==current_user.email:
+               submissions.append(i)
+     # return HttpResponse(template/vertdict.html)
+     user_name="Anonymous"
+     if request.user:
+          id=request.user.id
+          user = User.objects.get(id=id)
+          user_name = user.first_name + " "+user.last_name
+          if user_name==" ":
+               user_name=request.user
+     return render(request,'verdict.html',{
+          "user_email":user_name,
+          "submissions":submissions,
+          "problem_name" : problem_name
+     })
 
+
+
+@login_required(login_url='/login')
 def AllLeaderBoard(request):
      user_name="Anonymous"
      if request.user:

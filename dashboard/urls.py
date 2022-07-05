@@ -5,4 +5,6 @@ urlpatterns = [
     path('problem/<str:problem_id>',views.ViewProblem),
     path('problem/submit/<str:problem_id>',views.submitProblem),
     path('leaderboard',views.AllLeaderBoard),
+    path('submissions/<str:problem_id>',views.showLeaderBoard),
+    path('mysubmissions/<str:problem_id>',views.mySubmissions),
 ]

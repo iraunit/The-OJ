@@ -202,7 +202,7 @@ section {
 }
 
 button:hover {
-    transform: scale(0.5);
+    transform: scale(0.97);
 }
 
 .highlight {
@@ -211,4 +211,5 @@ button:hover {
 
 #clear {
     width: auto;
+    margin: 0.3rem;
 }

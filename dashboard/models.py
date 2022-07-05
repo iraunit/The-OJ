@@ -1,6 +1,6 @@
 import datetime
 import json
-from django.forms import DateTimeField, FloatField
+from django.forms import DateTimeField, EmailField, FloatField
 from mongoengine import *
 from mongoengine import Document,connect
 from mongoengine.document import Document
@@ -21,6 +21,7 @@ class SubmittedProblem(EmbeddedDocument):
     verdict=StringField(Required=True)
     submitted_date=DateTimeField(default=datetime.datetime.now)
     code=StringField(unique=True)
+    user_email=EmailField()
     user_name=StringField(required=True)
     language=StringField()
 
@@ -30,6 +31,7 @@ class SubmittedProblem(EmbeddedDocument):
             "verdict":self.verdict,
             "submitted_date":self.submitted_date,
             "code":self.code,
+            "user_email":self.user_email,
             "user_name":self.email_id,
             "language":self.language,
         }
