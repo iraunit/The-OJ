@@ -4,12 +4,17 @@ from django.forms import DateTimeField, FloatField
 from mongoengine import *
 from mongoengine import Document,connect
 from mongoengine.document import Document
+from pygments import lexers,styles
 from mongoengine.fields import StringField, ListField,EmbeddedDocument,EmbeddedDocumentField
 from decouple import config
 connect_string="mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority&connectTimeoutMS=60000"
 # my_client = pymongo.MongoClient(connect_string)
 connect(db="my_database", host=connect_string)
 
+
+LEXERS = [item for item in lexers.get_all_lexers() if item[1]]
+LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
+STYLE_CHOICES = sorted([(item, item) for item in styles.get_all_styles()])
 
 class SubmittedProblem(EmbeddedDocument):
     problem_id=StringField(Required=True)

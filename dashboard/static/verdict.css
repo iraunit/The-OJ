@@ -162,3 +162,35 @@ h2 small {
     -ms-filter: blur(2px);
     filter: blur(2px);
 }
+
+#user_code {
+    height: 0;
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+    transition: all 2.5s, opacity 2.5s ease;
+}
+
+code {
+    opacity: 0;
+    transition: all 2.5s, opacity 2.5s ease;
+}
+
+.active #user_code {
+    visibility: visible;
+    display: block;
+    padding: 0.1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.3rem;
+    background-color: aliceblue;
+    height: auto;
+    opacity: 1;
+    transition: all 2.5s, opacity 2.5s ease;
+}
+
+.active code {
+    font-size: 1rem;
+    font-weight: 100;
+    opacity: 1;
+    transition: all 2.5s, opacity 2.5s ease;
+}

@@ -37,23 +37,26 @@
             <div class="col col-6">Code</div>
           </li>
           {% for submission in submissions %}
+          <div class="">
           <li class="table-row">
             <div class="col col-1" >{{submission.user_name}}</div>
             <div class="col col-2" >{{submission.verdict}}</div>
             <div class="col col-3" >{{submission.language}}</div>
             <div class="col col-4" >{{submission.runtime}}</div>
             <div class="col col-5" >{{submission.submitted_date}}</div>
-            <div class="col col-6"><a href="#"><i class="material-icons">code</i></a>
-            
+            <div class="col col-6 toggle" id="show_code">
+              <a href="#"><i class="material-icons">code</i></a>
             </div>
           </li>
-          <div><p>{{submission.code}}</p></div>
+          <div id="user_code" class="control-me"><pre class="prettyprint"><code class="language-cpp">{{submission.code}}</code></pre></div>
+        </div>
           {% endfor %}
         </ul>
       </div>
    
-    <script src="{% static 'home.js' %}"></script>
+    {% comment %} <script src="{% static 'home.js' %}"></script> {% endcomment %}
     <script src="{% static 'verdict.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=doxy"></script>
     <script>
       if ( window.history.replaceState ) {
           window.history.replaceState( null, null, window.location.href );

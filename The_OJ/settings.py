@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'rest_framework_mongoengine'
+    'rest_framework_mongoengine',
 ]
 
 # remove in production add domains instead

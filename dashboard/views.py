@@ -58,19 +58,18 @@ def ViewProblem(request,problem_id):
 @login_required(login_url='/login')
 def submitProblem(request,problem_id):
      user_name="Anonymous"
-     problem_name=""
+     current_problem=Problem.objects(problem_id=problem_id).get()
+     problem_name=current_problem.problem_name
      if request.method=='POST':
           id=request.user.id
           current_user = User.objects.get(id=id)
           user=Users.objects(email_id=current_user.email).get()
-          current_problem=Problem.objects(problem_id=problem_id).get()
           code=request.POST['code_by_user']
           user_name=current_user.first_name + " "+current_user.last_name
           if user_name==" ":
                user_name=request.user.username
           language="C++"
           submitted_problem_by_users=list(user.solved_problem)
-          problem_name=current_problem.problem_name
           test_cases=list(current_problem.test_case)
           verdict= handle_submission(code,user.email_id,test_cases)
           if verdict=="Accepted":
