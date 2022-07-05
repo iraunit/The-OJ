@@ -45,19 +45,22 @@
             <div class="col col-5" >{{submission.submitted_date}}</div>
             <div class="col col-6"><a href="#"><i class="material-icons">code</i></a>
             
-            
             </div>
           </li>
+          <div><p>{{submission.code}}</p></div>
           {% endfor %}
         </ul>
       </div>
    
     <script src="{% static 'home.js' %}"></script>
+    <script src="{% static 'verdict.js' %}"></script>
     <script>
       if ( window.history.replaceState ) {
           window.history.replaceState( null, null, window.location.href );
       }
   </script>
+
+
 </body>
 
 </html>

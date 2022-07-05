@@ -1,4 +1,5 @@
 from genericpath import exists
+from os import remove
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -68,10 +69,14 @@ def submitProblem(request,problem_id):
           if user_name==" ":
                user_name=request.user.username
           language="C++"
-          user.update(push__solved_problem=problem_id)
+          submitted_problem_by_users=list(user.solved_problem)
           problem_name=current_problem.problem_name
           test_cases=list(current_problem.test_case)
           verdict= handle_submission(code,user.email_id,test_cases)
+          if verdict=="Accepted":
+               if current_problem.problem_id not in submitted_problem_by_users:
+                    user.update(push__solved_problem=problem_id)
+                    user.update(set__total_score=current_problem.score+user.total_score)
           current_submission_by_user=SubmittedProblem(problem_id=problem_id,verdict=verdict,code=code,user_name=user_name,language=language)
           current_problem.update(push__solved_by=current_submission_by_user)
      # current_problem=Problem.objects.fields(problem_id=problem_id,slice__solved_by=[0,10]).all()
@@ -134,8 +139,10 @@ def handle_submission(submission,user_name, testcases):
                output = subprocess.run([exec_file_name], capture_output=True, input = input, timeout=5)
                output = output.stdout.decode("utf-8")
         except:
+             remove(exec_file_name)
              return "TLE"
         if output != testcase.output:
+            remove(exec_file_name)
             return "Wrong Answer"
-
+    remove(exec_file_name)
     return "Accepted"
