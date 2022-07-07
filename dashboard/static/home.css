@@ -213,3 +213,8 @@ button:hover {
     width: auto;
     margin: 0.3rem;
 }
+
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+}

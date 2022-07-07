@@ -1,10 +1,11 @@
+from cmath import log
 from genericpath import exists
 from os import remove
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
-from .models import Problem,Users,SubmittedProblem
+from .models import Problem,Users,SubmittedProblem,Discuss
 import pymongo
 from mongoengine import *
 from decouple import config
@@ -17,6 +18,7 @@ new_problem=problem_database['problem']
 
 # Create your views here.
 @csrf_exempt
+@login_required(login_url='/login')
 def home(request):
      user_email="Anonymous"
      try:
@@ -168,13 +170,81 @@ def handle_submission(submission,user_name, testcases):
         input = testcase.input
         input = bytes(input, 'utf-8')
         try:
-               output = subprocess.run([exec_file_name], capture_output=True, input = input, timeout=5)
+               output = subprocess.run([exec_file_name], capture_output=True, input = input,timeout=20)
                output = output.stdout.decode("utf-8")
         except:
              remove(exec_file_name)
              return "TLE"
-        if output != testcase.output:
+        if output.strip() != testcase.output.strip():
+            print(output.strip())
+            print(testcase.output.strip())
             remove(exec_file_name)
             return "Wrong Answer"
     remove(exec_file_name)
     return "Accepted"
+
+
+@login_required(login_url='/login')
+def writeDiscuss(request,problem_id):
+     user_email="Anonymous"
+     if request.user:
+          id=request.user.id
+          user = User.objects.get(id=id)
+          user_email = user.first_name + " "+user.last_name
+          if user_email==" ":
+               user_email=request.user
+     problem_to_show=Problem.objects(problem_id=problem_id)
+     return render(request,'post-discuss.html',{
+          "user_email":user_email,
+          "response":problem_to_show,
+          "problem_id":problem_id
+     })
+
+@login_required(login_url='/login')
+def PostDiscuss(request,problem_id):
+     user_name="Anonymous"
+     current_problem=Problem.objects(problem_id=problem_id).get()
+     if request.method=='POST':
+          id=request.user.id
+          current_user = User.objects.get(id=id)
+          discuss_by_user=request.POST['discuss_by_user']
+          title=request.POST['title']
+          user_name=current_user.first_name + " "+current_user.last_name
+          if user_name==" ":
+               user_name=request.user.username
+          discuss=Discuss(user_name=user_name,discuss=discuss_by_user,title=title)
+          current_problem.update(push__discussion=discuss)
+     # current_problem=Problem.objects.fields(problem_id=problem_id,slice__solved_by=[0,10]).all()
+     return Discussion(request,problem_id)
+
+
+@login_required(login_url='/login')
+def Discussion(request,problem_id):
+     current_problem=Problem.objects(problem_id=problem_id).get()
+     # problem_name=current_problem[0]["problem_name"]
+     user_name="Anonymous"
+     if request.method=='POST':
+          id=request.user.id
+          current_user = User.objects.get(id=id)
+          discuss_by_user=request.POST['discuss_by_user']
+          title=request.POST['title']
+          user_name=current_user.first_name + " "+current_user.last_name
+          if user_name==" ":
+               user_name=request.user.username
+          discuss=Discuss(user_name=user_name,discuss=discuss_by_user,title=title)
+          current_problem.update(push__discussion=discuss)
+     if request.user:
+          id=request.user.id
+          user = User.objects.get(id=id)
+          user_name = user.first_name + " "+user.last_name
+          if user_name==" ":
+               user_name=request.user
+     current_problem=(new_problem.find( { 'problem_id':problem_id } ))
+     array_curr=list(current_problem)
+     all_discussion=array_curr[0]["discussion"]
+     return render(request,'discuss.html',{
+          "user_email":user_name,
+          "discussions":all_discussion,
+          "problem_name" : "problem_name",
+          "problem_id":problem_id
+     })
