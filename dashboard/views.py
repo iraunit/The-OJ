@@ -106,7 +106,8 @@ def showLeaderBoard(request,problem_id):
      return render(request,'verdict.html',{
           "user_email":user_name,
           "submissions":submissions,
-          "problem_name" : problem_name
+          "problem_name" : problem_name,
+          "problem_id":problem_id
      })
 
 @login_required(login_url='/login')
@@ -133,7 +134,8 @@ def mySubmissions(request,problem_id):
      return render(request,'verdict.html',{
           "user_email":user_name,
           "submissions":submissions,
-          "problem_name" : problem_name
+          "problem_name" : problem_name,
+          "problem_id":problem_id
      })
 
 
@@ -221,7 +223,7 @@ def PostDiscuss(request,problem_id):
 @login_required(login_url='/login')
 def Discussion(request,problem_id):
      current_problem=Problem.objects(problem_id=problem_id).get()
-     # problem_name=current_problem[0]["problem_name"]
+     problem_name=None
      user_name="Anonymous"
      if request.method=='POST':
           id=request.user.id
@@ -240,11 +242,12 @@ def Discussion(request,problem_id):
           if user_name==" ":
                user_name=request.user
      current_problem=(new_problem.find( { 'problem_id':problem_id } ))
+     problem_name=current_problem[0]["problem_name"]
      array_curr=list(current_problem)
      all_discussion=array_curr[0]["discussion"]
      return render(request,'discuss.html',{
           "user_email":user_name,
           "discussions":all_discussion,
-          "problem_name" : "problem_name",
+          "problem_name" : problem_name,
           "problem_id":problem_id
      })

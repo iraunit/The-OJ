@@ -218,3 +218,18 @@ pre {
     overflow-x: auto;
     white-space: pre-wrap;
 }
+
+.last {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+h2 {
+    color: white;
+    font-size: 2rem;
+    margin: 1.5rem 0;
+    text-align: center;
+}
