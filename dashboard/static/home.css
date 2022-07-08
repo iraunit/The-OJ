@@ -158,11 +158,23 @@ section {
 #textarea {
     font-size: 1rem;
     color: black;
+    width: auto;
     border-radius: 0.5rem;
     border: blue 1px solid;
     min-height: 25rem;
     min-width: 50rem;
     padding: 1rem;
+}
+
+#textarea-title {
+    font-size: 1rem;
+    color: black;
+    border-radius: 0.5rem;
+    border: blue 1px solid;
+    min-height: 1rem;
+    min-width: 50rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
 }
 
 #tags {
@@ -219,7 +231,7 @@ pre {
     white-space: pre-wrap;
 }
 
-.last {
+.last form {
     align-items: center;
     justify-content: center;
     display: flex;
@@ -232,4 +244,11 @@ h2 {
     font-size: 2rem;
     margin: 1.5rem 0;
     text-align: center;
+}
+
+select {
+    padding: 0.4rem;
+    margin: 0.5rem;
+    font-size: 0.7rem;
+    color: #222;
 }

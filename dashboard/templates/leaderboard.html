@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -29,14 +30,17 @@
         <h2>Leaderboard</h2>
         <ul class="responsive-table">
           <li class="table-header">
-            <div class="col col-1">User Name</div>
-            <div class="col col-2">Total Score</div>
+            <div class="col col-1">Rank</div>
+            <div class="col col-2">User Name</div>
+            <div class="col col-3">Total Score</div>
           </li>
-          {% for leader in leaders %}
+          {% for leader,rank in leaders %}
           <li class="table-row">
-            <div class="col col-1" >{{leader.user_name}}</div>
-            <div class="col col-2" >{{leader.total_score}}</div>
+            <div class="col col-1" >{{rank}}</div>
+            <div class="col col-2" >{{leader.user_name}}</div>
+            <div class="col col-3" >{{leader.total_score}}</div>
           </li>
+          
           {% endfor %}
         </ul>
       </div>

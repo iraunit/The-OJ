@@ -53,9 +53,13 @@
     </section> 
     <div class="last">
         <form method="POST"  action="submit/{{problem.problem_id}}">
+        <select name = "dropdown">
+            <option value = "cpp" selected>C++</option>
+            <option value = "java">Java</option>
+            <option value = "python">Python</option>
+            </select>
             {% csrf_token %}
-        <textarea  id="textarea" placeholder="Write Your Code Here" name="code_by_user"></textarea>
-
+            <textarea  id="textarea" placeholder="Write Your Code Here" name="code_by_user"></textarea>
         <div class="btn">
             <button id="clear" type="submit">Submit</button>
         </div> 

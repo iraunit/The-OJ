@@ -55,11 +55,11 @@
     <div class="last">
         <form method="POST"  action="/discussion/{{problem.problem_id}}">
             {% csrf_token %}
-        <textarea  id="textarea" placeholder="Title" name="title"></textarea>
+        <textarea  id="textarea-title" placeholder="Title" name="title"></textarea>
         <textarea  id="textarea" placeholder="Write Your Post Here" name="discuss_by_user"></textarea>
 
         <div class="btn">
-            <button id="clear" type="submit"><i class="material-icons">publish</i></button>
+            <button id="clear" type="submit" title="Publish"><i class="material-icons">publish</i></button>
         </div> 
     </form>
     {% comment %} <div class="btn">

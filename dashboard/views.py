@@ -1,4 +1,6 @@
-from cmath import log
+from ftplib import all_errors
+from django import template
+register = template.Library()
 from genericpath import exists
 from os import remove
 from django.shortcuts import redirect, render
@@ -150,9 +152,13 @@ def AllLeaderBoard(request):
           if user_name==" ":
                user_name=request.user
      all_users=Users.objects().all().order_by('-total_score')
+     rank=[]
+     for i in range(len(all_users)):
+          rank.append(i+1)
+     myList=zip(all_users,rank)
      return render(request,'leaderboard.html',{
           "user_email":user_name,
-          "leaders":all_users
+          "leaders":myList
      })
 
 
@@ -251,3 +257,8 @@ def Discussion(request,problem_id):
           "problem_name" : problem_name,
           "problem_id":problem_id
      })
+
+
+@register.simple_tag
+def update_variable(value):
+    return value+1
