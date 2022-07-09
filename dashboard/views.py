@@ -208,23 +208,6 @@ def writeDiscuss(request,problem_id):
           "problem_id":problem_id
      })
 
-@login_required(login_url='/login')
-def PostDiscuss(request,problem_id):
-     user_name="Anonymous"
-     current_problem=Problem.objects(problem_id=problem_id).get()
-     if request.method=='POST':
-          id=request.user.id
-          current_user = User.objects.get(id=id)
-          discuss_by_user=request.POST['discuss_by_user']
-          title=request.POST['title']
-          user_name=current_user.first_name + " "+current_user.last_name
-          if user_name==" ":
-               user_name=request.user.username
-          discuss=Discuss(user_name=user_name,discuss=discuss_by_user,title=title)
-          current_problem.update(push__discussion=discuss)
-     # current_problem=Problem.objects.fields(problem_id=problem_id,slice__solved_by=[0,10]).all()
-     return Discussion(request,problem_id)
-
 
 @login_required(login_url='/login')
 def Discussion(request,problem_id):
