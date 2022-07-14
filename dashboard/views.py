@@ -1,4 +1,4 @@
-from ftplib import all_errors
+import code
 from django import template
 register = template.Library()
 from genericpath import exists
@@ -11,7 +11,7 @@ from .models import Problem,Users,SubmittedProblem,Discuss
 import pymongo
 from mongoengine import *
 from decouple import config
-import subprocess
+import subprocess,re
 
 connect_string="mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority"
 my_client = pymongo.MongoClient(connect_string)
@@ -65,27 +65,29 @@ def ViewProblem(request,problem_id):
 def submitProblem(request,problem_id):
      user_name="Anonymous"
      current_problem=Problem.objects(problem_id=problem_id).get()
-     problem_name=current_problem.problem_name
      if request.method=='POST':
           id=request.user.id
           current_user = User.objects.get(id=id)
           user=Users.objects(email_id=current_user.email).get()
+          Name=current_user.first_name + " "+current_user.last_name
+          user_name=request.user.email.split('@')[0]
           code=request.POST['code_by_user']
-          user_name=current_user.first_name + " "+current_user.last_name
+          lang=request.POST['lang']
+          if lang=='cpp':
+               verdict=getVerdictCPP(request,problem_id,code,lang,user_name)
           if user_name==" ":
                user_name=request.user.username
           language="C++"
           submitted_problem_by_users=list(user.solved_problem)
-          test_cases=list(current_problem.test_case)
-          verdict= handle_submission(code,user.email_id,test_cases)
+          # verdict= handle_submission(code,user.email_id,test_cases)
           user_email=user.email_id
           if verdict=="Accepted":
                if current_problem.problem_id not in submitted_problem_by_users:
                     user.update(push__solved_problem=problem_id)
                     user.update(set__total_score=current_problem.score+user.total_score)
-          current_submission_by_user=SubmittedProblem(problem_id=problem_id,verdict=verdict,code=code,user_email=user_email,user_name=user_name,language=language)
+          current_submission_by_user=SubmittedProblem(problem_id=problem_id,verdict=verdict,code=code,user_email=user_email,user_name=Name,language=language)
           current_problem.update(push__solved_by=current_submission_by_user)
-     # current_problem=Problem.objects.fields(problem_id=problem_id,slice__solved_by=[0,10]).all()
+     current_problem=Problem.objects.fields(problem_id=problem_id,slice__solved_by=[0,10]).all()
      return showLeaderBoard(request,problem_id)
 
 @login_required(login_url='/login')
@@ -242,6 +244,39 @@ def Discussion(request,problem_id):
      })
 
 
-@register.simple_tag
-def update_variable(value):
-    return value+1
+@login_required(login_url='/login')
+def getVerdictCPP(request,problem_id,code,lang,user_name):
+     input_file_name=problem_id+'input.txt'
+     output_file_name=problem_id+'output.txt'
+     user_output_file_name=problem_id+user_name+'output.txt'
+     input_file=f'TestCases/input/{input_file_name}'
+     output_file=f'TestCases/output/{output_file_name}'
+     user_output_file=f'TestCases/output/{user_output_file_name}'
+     if lang=="cpp":
+          make_container=subprocess.run('docker run -d gcc tail -f /dev/null',capture_output=True)
+          container_id=make_container.stdout.decode()[:-1]
+          code_file_name=f'user_codes/{user_name}.cpp'
+          with open(code_file_name, 'w') as destination:
+               destination.write(code)
+          subprocess.run(f'docker cp {code_file_name} {container_id}:/code.cpp')
+          Error=subprocess.run(f'docker exec {container_id} g++ code.cpp -o out',stderr=subprocess.PIPE).stderr
+          compile_error=subprocess.run(f'docker exec -it {container_id} sh -c "test -f out"').returncode
+          if compile_error==1:
+               # subprocess.run(f'docker rm -f {container_id}')
+               return "Compile Error "+str(Error)
+          subprocess.run(f'docker cp {input_file} {container_id}:/input.txt')
+          subprocess.run(f'docker exec -it {container_id} sh -c "./out <input.txt> useroutput.txt"')
+          subprocess.run(f'docker cp {container_id}:/useroutput.txt {user_output_file}')
+          with open(output_file, 'r') as file:
+            data1 = file.read()
+        
+          with open(user_output_file, 'r') as file:
+            data2 = file.read()
+          data1 = re.sub('[\n ]','',data1)
+          data2 = re.sub('[\n ]','',data2)
+          if data1!=data2:
+            subprocess.run(f'docker rm -f {container_id}')
+            return "Wrong Answer"
+          subprocess.run(f'docker rm -f {container_id}')
+          return "Accepted"
+     
