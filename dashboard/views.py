@@ -74,7 +74,7 @@ def submitProblem(request,problem_id):
           id=request.user.id
           current_user = User.objects.get(id=id)
           user=Users.objects(email_id=current_user.email).get()
-          Name=current_user.first_name + " "+current_user.last_name
+          Name=user.user_name
           user_name=request.user.email.split('@')[0]
           code=request.POST['code_by_user']
           lang=request.POST['lang']
