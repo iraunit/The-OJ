@@ -62,7 +62,8 @@ def ViewProblem(request,problem_id):
      return render(request,'problem.html',{
           "user_email":user_email,
           "response":problem_to_show,
-          "problem_id":problem_id
+          "problem_id":problem_id,
+          "user__email":request.user.email
      })
 
 @login_required(login_url='/login')
@@ -84,7 +85,7 @@ def submitProblem(request,problem_id):
                verdict=getVerdictPY(request,problem_id,code,lang,user_name)
                language="Python"
           if lang=='java':
-               verdict="NO lang"
+               verdict=getVerdictJAVA(request,problem_id,code,lang,user_name)
                language="Java"
           if user_name==" ":
                user_name=request.user.username
@@ -272,7 +273,7 @@ def getVerdictCPP(request,problem_id,code,lang,user_name):
           Error=subprocess.run(f'docker exec {container_id} g++ code.cpp -o out',stderr=subprocess.PIPE).stderr
           compile_error=subprocess.run(f'docker exec -it {container_id} sh -c "test -f out"').returncode
           if compile_error==1:
-               # subprocess.run(f'docker rm -f {container_id}')
+               subprocess.run(f'docker rm -f {container_id}')
                return "Compile Error "+str(Error)
           subprocess.run(f'docker cp {input_file} {container_id}:/input.txt')
           subprocess.run(f'docker exec -it {container_id} sh -c "./out <input.txt> useroutput.txt"')
@@ -323,4 +324,37 @@ def getVerdictPY (request,problem_id,code,lang,user_name):
         subprocess.run(f'docker rm -f {containerId}')
         return "Accepted"
 
+
+def getVerdictJAVA (request,problem_id,code,lang,user_name):
+        cwd =str( os.getcwd())
+        print(cwd)
+        input_file_name=problem_id+'input.txt'
+        output_file_name=problem_id+'output.txt'
+        user_output_file_name=problem_id+user_name+'output.txt'
+        input_file=BASE_DIR/f'testcase/input/{input_file_name}'
+        output_file=BASE_DIR/f'testcase/output/{output_file_name}'
+        user_output_file=BASE_DIR/f'testcase/output/{user_output_file_name}'
+        code_file_name=BASE_DIR/f'user_codes/{user_name}.java'
+        with open(code_file_name, 'w') as destination:
+               destination.write(code)
+        make_container= subprocess.run(f'docker run -d java tail -f /dev/null',capture_output=True)
+        containerId = make_container.stdout.decode()[:-1]
+        subprocess.run(f'docker cp {code_file_name} {containerId}:/{user_name}.java')
+        subprocess.run(f'docker cp {input_file} {containerId}:/input.txt')
+        subprocess.run(f'docker exec {containerId} javac {user_name}.java')   
+        subprocess.run(f'docker exec {containerId} sh -c "java {user_name} < input.txt > useroutput.txt"') 
+        subprocess.run(f'docker cp {containerId}:/useroutput.txt {user_output_file}')
+
+        with open(output_file, 'r') as file:
+            data1 = file.read()
+        
+        with open(user_output_file, 'r') as file:
+            data2 = file.read()
+        data1 = re.sub('[\n ]','',data1)
+        data2 = re.sub('[\n ]','',data2)
+        if data1!=data2:
+            subprocess.run(f'docker rm -f {containerId}')
+            return "Wrong Answer"
+        subprocess.run(f'docker rm -f {containerId}')
+        return "Accepted"
 

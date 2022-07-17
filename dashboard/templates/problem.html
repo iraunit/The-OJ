@@ -54,9 +54,9 @@
     <div class="last">
         <form method="POST"  action="submit/{{problem.problem_id}}">
             {% csrf_token %}
-        <select name = "lang">
+        <select name = "lang" id="selected_lang">
             <option value = "cpp" selected>C++</option>
-            <option value = "java">Java</option>
+            <option value = "java" id="{{user__email}}">Java</option>
             <option value = "py">Python</option>
             </select>
             <textarea  id="textarea" placeholder="Write Your Code Here" name="code_by_user"></textarea>
