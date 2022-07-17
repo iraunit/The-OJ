@@ -1,4 +1,7 @@
-import code
+from fileinput import filename
+from importlib.resources import path
+from sys import stderr, stdout
+import os
 from django import template
 register = template.Library()
 from genericpath import exists
@@ -12,12 +15,13 @@ import pymongo
 from mongoengine import *
 from decouple import config
 import subprocess,re
+from pathlib import Path
 
 connect_string="mongodb+srv://"+config('MONGO_ID')+":"+config('MONGO_PASS')+"@database-the-oj.ocnht.mongodb.net/?retryWrites=true&w=majority"
 my_client = pymongo.MongoClient(connect_string)
 problem_database=my_client["my_database"]
 new_problem=problem_database['problem']
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 # Create your views here.
 @csrf_exempt
 @login_required(login_url='/login')
@@ -73,11 +77,17 @@ def submitProblem(request,problem_id):
           user_name=request.user.email.split('@')[0]
           code=request.POST['code_by_user']
           lang=request.POST['lang']
+          language="C++"
           if lang=='cpp':
                verdict=getVerdictCPP(request,problem_id,code,lang,user_name)
+          if lang=='py':
+               verdict=getVerdictPY(request,problem_id,code,lang,user_name)
+               language="Python"
+          if lang=='java':
+               verdict="NO lang"
+               language="Java"
           if user_name==" ":
                user_name=request.user.username
-          language="C++"
           submitted_problem_by_users=list(user.solved_problem)
           # verdict= handle_submission(code,user.email_id,test_cases)
           user_email=user.email_id
@@ -249,9 +259,9 @@ def getVerdictCPP(request,problem_id,code,lang,user_name):
      input_file_name=problem_id+'input.txt'
      output_file_name=problem_id+'output.txt'
      user_output_file_name=problem_id+user_name+'output.txt'
-     input_file=f'TestCases/input/{input_file_name}'
-     output_file=f'TestCases/output/{output_file_name}'
-     user_output_file=f'TestCases/output/{user_output_file_name}'
+     input_file=BASE_DIR/f'testcase/input/{input_file_name}'
+     output_file=BASE_DIR/f'testcase/output/{output_file_name}'
+     user_output_file=BASE_DIR/f'testcase/output/{user_output_file_name}'
      if lang=="cpp":
           make_container=subprocess.run('docker run -d gcc tail -f /dev/null',capture_output=True)
           container_id=make_container.stdout.decode()[:-1]
@@ -279,4 +289,38 @@ def getVerdictCPP(request,problem_id,code,lang,user_name):
             return "Wrong Answer"
           subprocess.run(f'docker rm -f {container_id}')
           return "Accepted"
-     
+
+
+def getVerdictPY (request,problem_id,code,lang,user_name):
+        cwd =str( os.getcwd())
+        print(cwd)
+        input_file_name=problem_id+'input.txt'
+        output_file_name=problem_id+'output.txt'
+        user_output_file_name=problem_id+user_name+'output.txt'
+        input_file=BASE_DIR/f'testcase/input/{input_file_name}'
+        output_file=BASE_DIR/f'testcase/output/{output_file_name}'
+        user_output_file=BASE_DIR/f'testcase/output/{user_output_file_name}'
+        code_file_name=BASE_DIR/f'user_codes/{user_name}.py'
+        with open(code_file_name, 'w') as destination:
+               destination.write(code)
+        make_container= subprocess.run(f'docker run -d python tail -f /dev/null',capture_output=True)
+        containerId = make_container.stdout.decode()[:-1]
+        subprocess.run(f'docker cp {code_file_name} {containerId}:/code.py')
+        subprocess.run(f'docker cp {input_file} {containerId}:/input.txt')
+        subprocess.run(f'docker exec -it {containerId} sh -c "python code.py <input.txt> useroutput.txt"')
+        subprocess.run(f'docker cp {containerId}:/useroutput.txt {user_output_file}')
+
+        with open(output_file, 'r') as file:
+            data1 = file.read()
+        
+        with open(user_output_file, 'r') as file:
+            data2 = file.read()
+        data1 = re.sub('[\n ]','',data1)
+        data2 = re.sub('[\n ]','',data2)
+        if data1!=data2:
+            subprocess.run(f'docker rm -f {containerId}')
+            return "Wrong Answer"
+        subprocess.run(f'docker rm -f {containerId}')
+        return "Accepted"
+
+
