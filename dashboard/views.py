@@ -279,10 +279,10 @@ def getVerdictCPP(request,problem_id,code,lang,user_name):
           subprocess.run(f'docker exec -it {container_id} sh -c "./out <input.txt> useroutput.txt"')
           subprocess.run(f'docker cp {container_id}:/useroutput.txt {user_output_file}')
           with open(output_file, 'r') as file:
-            data1 = file.read()
+            data1 = file.read().strip()
         
           with open(user_output_file, 'r') as file:
-            data2 = file.read()
+            data2 = file.read().strip()
           data1 = re.sub('[\n ]','',data1)
           data2 = re.sub('[\n ]','',data2)
           if data1!=data2:
@@ -312,10 +312,10 @@ def getVerdictPY (request,problem_id,code,lang,user_name):
         subprocess.run(f'docker cp {containerId}:/useroutput.txt {user_output_file}')
 
         with open(output_file, 'r') as file:
-            data1 = file.read()
+            data1 = file.read().strip()
         
         with open(user_output_file, 'r') as file:
-            data2 = file.read()
+            data2 = file.read().strip()
         data1 = re.sub('[\n ]','',data1)
         data2 = re.sub('[\n ]','',data2)
         if data1!=data2:
@@ -326,8 +326,6 @@ def getVerdictPY (request,problem_id,code,lang,user_name):
 
 
 def getVerdictJAVA (request,problem_id,code,lang,user_name):
-        cwd =str( os.getcwd())
-        print(cwd)
         input_file_name=problem_id+'input.txt'
         output_file_name=problem_id+'output.txt'
         user_output_file_name=problem_id+user_name+'output.txt'
@@ -346,10 +344,10 @@ def getVerdictJAVA (request,problem_id,code,lang,user_name):
         subprocess.run(f'docker cp {containerId}:/useroutput.txt {user_output_file}')
 
         with open(output_file, 'r') as file:
-            data1 = file.read()
+            data1 = file.read().strip()
         
         with open(user_output_file, 'r') as file:
-            data2 = file.read()
+            data2 = file.read().strip()
         data1 = re.sub('[\n ]','',data1)
         data2 = re.sub('[\n ]','',data2)
         if data1!=data2:

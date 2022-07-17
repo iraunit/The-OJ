@@ -20,7 +20,7 @@ class SubmittedProblem(EmbeddedDocument):
     problem_id=StringField(Required=True)
     verdict=StringField(Required=True)
     submitted_date=DateTimeField(default=datetime.datetime.now)
-    code=StringField(unique=True)
+    code=StringField()
     user_email=EmailField()
     user_name=StringField(required=True)
     language=StringField()
@@ -89,7 +89,7 @@ class Problem(Document):
             "tags":self.tags,
             "score":self.score,
             "solved_by":self.solved_by,
-            # "test_case":self.test_case,
+            "discussion":self.discussion,
         }
         return json.dumps(problem_dict)
     
@@ -122,35 +122,34 @@ class Users(Document):
 # sub=SubmittedProblem(problem_id="problem submit ho gya",verdict="pass ho gya code",user_name="Raunit Verma")
 
 problem=Problem(
-    problem_id = "weird_algorithm",
-    problem_name="Weird Algorithm",
+    problem_id = "trailing_zeroes",
+    problem_name="Trailing Zeros",
     description="""
-    Consider an algorithm that takes as input a positive integer n. If n is even, the algorithm divides it by two, and if n is odd, the algorithm multiplies it by three and adds one. The algorithm repeats this, until n is one. For example, the sequence for n=3 is as follows:
-               
-                        3→10→5→16→8→4→2→1
+Your task is to calculate the number of trailing zeros in the factorial n!.
 
-    Your task is to simulate the execution of the algorithm for a given value of n.
-    
-    Input
+For example, 20!=2432902008176640000 and it has 4 trailing zeros.
 
-    The only input line contains an integer n.
+Input
 
-    Output
+The only input line has an integer n.
 
-    Print a line that contains all values of n during the algorithm.
+Output
 
-    Constraints
-    1≤n≤10^6
-    Example
+Print the number of trailing zeros in n!.
 
-    Input:
-    3
+Constraints
+1≤n≤109
+Example
 
-    Output:
-    3 10 5 16 8 4 2 1   
+Input:
+20
+
+Output:
+4
     """,
     difficulty="Medium",
     tags="Math, Introductory Problems",
-    score=50,
-    # test_case=[TestCase(input="7",output="7 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1"),TestCase(input="15",output="5040"),TestCase(input="159487",output="159487 478462 239231 717694 358847 1076542 538271 1614814 807407 2422222 1211111 3633334 1816667 5450002 2725001 8175004 4087502 2043751 6131254 3065627 9196882 4598441 13795324 6897662 3448831 10346494 5173247 15519742 7759871 23279614 11639807 34919422 17459711 52379134 26189567 78568702 39284351 117853054 58926527 176779582 88389791 265169374 132584687 397754062 198877031 596631094 298315547 894946642 447473321 1342419964 671209982 335604991 1006814974 503407487 1510222462 755111231 2265333694 1132666847 3398000542 1699000271 5097000814 2548500407 7645501222 3822750611 11468251834 5734125917 17202377752 8601188876 4300594438 2150297219 6450891658 3225445829 9676337488 4838168744 2419084372 1209542186 604771093 1814313280 907156640 453578320 226789160 113394580 56697290 28348645 85045936 42522968 21261484 10630742 5315371 15946114 7973057 23919172 11959586 5979793 17939380 8969690 4484845 13454536 6727268 3363634 1681817 5045452 2522726 1261363 3784090 1892045 5676136 2838068 1419034 709517 2128552 1064276 532138 266069 798208 399104 199552 99776 49888 24944 12472 6236 3118 1559 4678 2339 7018 3509 10528 5264 2632 1316 658 329 988 494 247 742 371 1114 557 1672 836 418 209 628 314 157 472 236 118 59 178 89 268 134 67 202 101 304 152 76 38 19 58 29 88 44 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1")]
+    score=40,
+    solved_by=[],
+    discussion=[]
 )
