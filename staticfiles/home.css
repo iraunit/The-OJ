@@ -1,0 +1,254 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+*::before,
+after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    padding-top: 3rem;
+    font-family: 'Roboto' 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: steelblue;
+}
+
+.nav {
+    max-height: 4rem;
+    z-index: 1;
+    position: fixed;
+    background-color: #222;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 1rem;
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 1rem;
+}
+
+.nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav.active {
+    background-color: white;
+    color: black;
+}
+
+.nav.active a {
+    color: black;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+section {
+    margin-top: 2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.questions {
+    max-width: 100%;
+    padding: 5rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.home-item {
+    background-color: #283042;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    min-width: 50rem;
+    box-shadow: .5rem 2px .5rem rgba(0, 0, 0, 0.1);
+}
+
+.home-link {
+    text-decoration: none;
+    color: white;
+    background-color: #283042;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.active #add {
+    display: none;
+}
+
+#remove {
+    display: none;
+}
+
+.active #remove {
+    display: block;
+}
+
+.answer {
+    height: 0;
+    opacity: 0;
+    color: rgb(230, 230, 230);
+    overflow: hidden;
+    position: relative;
+    background-color: #212838;
+    border-radius: 0.4rem;
+    padding-left: 0.5rem;
+    transition: all 2.5s, opacity 2.5s ease;
+}
+
+.active .answer {
+    height: auto;
+    opacity: 1;
+    transition: all 2.5s, opacity 2.5s ease;
+}
+
+.active .answer::before {
+    content: "";
+    position: absolute;
+    width: .3rem;
+    border-radius: 0.2rem;
+    background-color: #8fc460;
+    height: 90%;
+    margin-left: 0.1rem;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.answer p {
+    padding: 0.3rem;
+}
+
+#solve {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-size: 1.5rem;
+}
+
+#textarea {
+    font-size: 1rem;
+    color: black;
+    width: auto;
+    border-radius: 0.5rem;
+    border: blue 1px solid;
+    min-height: 25rem;
+    min-width: 50rem;
+    padding: 1rem;
+}
+
+#textarea-title {
+    font-size: 1rem;
+    color: black;
+    border-radius: 0.5rem;
+    border: blue 1px solid;
+    min-height: 1rem;
+    min-width: 50rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+#tags {
+    width: 500px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.tag {
+    background-color: rgb(204, 62, 26);
+    border-radius: 25px;
+    position: relative;
+    color: white;
+    padding: 5px 10px;
+    margin: 5px;
+    display: inline-block;
+}
+
+.btn {
+    /* position: relative; */
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: auto;
+}
+
+.btn button {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    font-size: 2rem;
+    font-family: cursive;
+    outline: none;
+    background-color: rgb(30, 32, 182);
+    border: none;
+    width: 15rem;
+    color: rgb(255, 255, 255);
+}
+
+button:hover {
+    transform: scale(0.97);
+}
+
+.highlight {
+    background-color: rgb(47, 0, 255);
+}
+
+#clear {
+    width: auto;
+    margin: 0.3rem;
+}
+
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+}
+
+.last form {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+h2 {
+    color: white;
+    font-size: 2rem;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+select {
+    padding: 0.4rem;
+    margin: 0.5rem;
+    font-size: 0.7rem;
+    color: #222;
+}

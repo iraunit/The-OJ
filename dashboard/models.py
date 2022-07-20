@@ -77,7 +77,7 @@ class Problem(Document):
     tags=StringField()
     score=FloatField()
     solved_by=ListField(EmbeddedDocumentField(SubmittedProblem))
-    # test_case=ListField(EmbeddedDocumentField(TestCase))
+    test_case=ListField(EmbeddedDocumentField(TestCase))
     discussion=ListField(EmbeddedDocumentField(Discuss))
 
     def json(self):
@@ -89,6 +89,7 @@ class Problem(Document):
             "tags":self.tags,
             "score":self.score,
             "solved_by":self.solved_by,
+            "test_case":self.test_case,
             "discussion":self.discussion,
         }
         return json.dumps(problem_dict)

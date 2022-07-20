@@ -257,12 +257,14 @@ def Discussion(request,problem_id):
 
 @login_required(login_url='/login')
 def getVerdictCPP(request,problem_id,code,lang,user_name):
+     print("hello weorking")
      input_file_name=problem_id+'input.txt'
      output_file_name=problem_id+'output.txt'
      user_output_file_name=problem_id+user_name+'output.txt'
      input_file=BASE_DIR/f'testcase/input/{input_file_name}'
      output_file=BASE_DIR/f'testcase/output/{output_file_name}'
      user_output_file=BASE_DIR/f'testcase/output/{user_output_file_name}'
+     print("hello not ")
      if lang=="cpp":
           make_container=subprocess.run('docker run -d gcc tail -f /dev/null',capture_output=True)
           container_id=make_container.stdout.decode()[:-1]
@@ -271,6 +273,7 @@ def getVerdictCPP(request,problem_id,code,lang,user_name):
                destination.write(code)
           subprocess.run(f'docker cp {code_file_name} {container_id}:/code.cpp')
           Error=subprocess.run(f'docker exec {container_id} g++ code.cpp -o out',stderr=subprocess.PIPE).stderr
+          print(Error)
           compile_error=subprocess.run(f'docker exec -it {container_id} sh -c "test -f out"').returncode
           if compile_error==1:
                subprocess.run(f'docker rm -f {container_id}')
